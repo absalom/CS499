@@ -24,7 +24,7 @@ window.onload = (function() {
   Crafty.scene("loading", function() { 
     resizeCanvas();
 
-    // display 'loading' text centered on (black) background
+    // display (centered) 'loading' text centered on (black) background
     Crafty.e("2D, DOM, Text")
       .attr({w:gameWidth, h:gameHeight, y:gameHeight/2})
       .textColor("#FFFFFF")
@@ -74,7 +74,7 @@ window.onload = (function() {
       }
     });
 
-    Crafty.e("Scroller");
+    //Crafty.e("Scroller");
     
     /* define a three layer parallax scrolling starfield entity manipulated via
        DOM */
@@ -127,7 +127,7 @@ window.onload = (function() {
       }
     });
 
-    //Crafty.e("Scroller3");
+    Crafty.e("Scroller3");
 
     // Parallax scrolling starfield using Canvas and custom draw methods
     Crafty.c("ScrollerC", {
@@ -214,7 +214,7 @@ window.onload = (function() {
       Crafty.trigger("resizeme", old);
     });
 
-    // add mouse click events to the scene
+    // add mouse click events to the canvas
     Crafty.addEvent(this, Crafty.stage.elem, "mousedown", function(e) {
       if(e.mouseButton == Crafty.mouseButtons.LEFT) {
         //console.log("mousedown");
@@ -225,7 +225,7 @@ window.onload = (function() {
       }
     });
 
-    // add touch events to the scene
+    // add touch events to the canvas
     Crafty.addEvent(this, Crafty.stage.elem, "touchstart", function(e) {
       e.preventDefault();
       touchEvent(e.touches[0].pageX, e.touches[0].pageY);
