@@ -1,7 +1,11 @@
 Crafty.c("Enemy", {
+    points:5,
     init:function(){
         //console.log("Enemy");
-        this.requires("2d, Canvas, Collision")
+        var speed = Crafty.math.randomInt(Math.ceil(3*scaleX),Math.ceil(7*scaleX));
+        var direction = Crafty.math.randomInt(-speed, speed);
+
+        this.requires("2d, Canvas, Collision, baseEnemy")
         .bind("EnterFrame", function(){
                 if(this.x > Crafty.viewport.width + this.w ||
                     this.x < -this.w ||
@@ -9,6 +13,8 @@ Crafty.c("Enemy", {
                     this.y > Crafty.viewport.height +this.h){
                     this.destroy();
                 }
+                this.y += speed;
+                this.x += direction;
             })
         .onHit("laser", function(ent){
                 var bullet = ent[0].obj;
@@ -20,25 +26,9 @@ Crafty.c("Enemy", {
                 player.die();
                 this.destroy();
             })
+    },
+    resetScale:function(){
+        this.h=64*scaleX;
+        this.w=64*scaleX;
     }
 });
-
-Crafty.c("BaseEnemy",{
-    points:5,
-    init:function(){
-        //console.log("BaseEnemy");
-        var speed = Crafty.math.randomInt(3,7);
-        var direction = Crafty.math.randomInt(-speed, speed);
-
-        this.requires("Enemy, baseEnemy")
-        .origin("center")
-        .bind("EnterFrame",function(){
-                this.y += speed;
-                this.x += direction;
-            })
-        .attr({
-                y:-this.h,
-                x:Crafty.math.randomInt(this.w,Crafty.viewport.width-this.w)
-            })
-    }
-})

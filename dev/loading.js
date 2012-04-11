@@ -13,16 +13,21 @@ function resizeCanvas() {
     var pixelRatio = window.devicePixelRatio;
 
     newWidth = 600;
+    /*
     if(mobile && pixelRatio>= 2){
         if(screen.width*pixelRatio < WIDTH) newWidth = screen.width * pixelRatio;
     }
     else{
         if(screen.width < WIDTH) newWidth = screen.width;
-    }
+    }*/
+    if(screen.width < WIDTH) newWidth = screen.width;
     newHeight = newWidth * ASPECT;
-
+    //console.log(newHeight);
+    //console.log(newWidth);
     scaleX = newWidth / WIDTH;
-    scaleY = newHeight / HEIGHT;
+    //scaleX = .5;
+    //newWidth = 300;
+    //newHeight=400;
     Crafty.viewport.width = newWidth;
     Crafty.viewport.height = newHeight;
 }
