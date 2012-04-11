@@ -43,7 +43,14 @@ Crafty.scene("start", function(){
             console.log("pause");
             Crafty.pause();
         }else {
-            player.trigger('Moved',{x:_x, y:_y});
+            //player.trigger('Moved',{x:_x, y:_y});
+            //player.trigger("NewDirection", {x:_x, y:_y});
+            if(_x>200){
+                player.movePlayer({x:_x, y:_y});
+            }
+            else{
+                player.movePlayer({x:0,y:0});
+            }
         }
         Crafty.e("TouchSpot").TouchSpot(_x-64*scaleX/2,_y-64*scaleX/2);
     }

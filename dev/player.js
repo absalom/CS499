@@ -33,6 +33,7 @@ Crafty.c("Player",{
                 }
             })
         .bind("NewDirection", function(direction){
+                console.log(direction);
                 if(direction.x<0 && old_direction <=0){
                     if(!this.isPlaying("move_left"))
                         this.stop().animate("move_left", 1, 0);
@@ -118,11 +119,30 @@ Crafty.c("Player",{
         //console.log(this.lives);
         //Crafty.trigger("UpdateStats");
         if(this.lives <= 0){
-            this.destroy();
+            //this.destroy();
             //Crafty.trigger("GameOver",this.score);
         }else{
             this.resetPos();
         }
+    },
+    movePlayer:function(moveTo){
+        console.log(moveTo);
+        var move_x = this.x-moveTo.x;
+        var move_y = this.y-moveTo.y;
+        if(moveTo.x != 0){
+        //if(move_x != 0 && move_y != 0){
+            this.bind("EnterFrame", this.movePlayerTo);
+        }
+        else{
+            this.stopPlayerMove();
+        }
+    },
+    movePlayerTo:function(){
+        console.log("bound");
+        this.y += -2;
+    },
+    stopPlayerMove:function(){
+        this.unbind("EnterFrame", this.movePlayerTo);
     }
 });
 
