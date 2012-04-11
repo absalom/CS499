@@ -1,5 +1,6 @@
 Crafty.scene("start", function(){
     //console.log("start");
+    var lastTouch = 0;
     Crafty.background("url(img/star_back.png)");
     var player = Crafty.e("Player")
     var enemysIncoming = function(frame){
@@ -32,6 +33,24 @@ Crafty.scene("start", function(){
         }
     } );
 
+    this.addEvent(this, Crafty.stage.elem, "touchstart", function(e) {
+        e.preventDefault();
+        touchEvent(e.touches[0].pageX, e.touches[0].pageY);
+    });
+
+    this.addEvent(this, Crafty.stage.elem, "touchend", function(e) {
+        e.preventDefault();
+        var now = new Date().getTime();
+        var lt = lastTouch || now + 1
+        var delta = now - lt;
+        if(delta < 500 && delta > 0) {
+            player.auto = !player.auto;
+        }else {
+            // single tap
+        }
+        lastTouch = now;
+    });
+
     Crafty.bind("EnterFrame", function(frame){
        enemysIncoming(frame.frame);
        Crafty.stage.elem.style.backgroundPosition = "0px "+frame.frame*2+"px";
@@ -40,18 +59,13 @@ Crafty.scene("start", function(){
     function touchEvent(_x, _y) {
         //console.log("touchEvent");
         if(_x <= (PAUSE_BOX*scaleX) && _y >= (Crafty.viewport.height - PAUSE_BOX*scaleX)) {
-            console.log("pause");
+            //console.log("pause");
             Crafty.pause();
         }else {
             //player.trigger('Moved',{x:_x, y:_y});
             //player.trigger("NewDirection", {x:_x, y:_y});
-            if(_x>200){
-                player.movePlayer({x:_x, y:_y});
-            }
-            else{
-                player.movePlayer({x:0,y:0});
-            }
+            player.movePlayer({x:_x-64*scaleX/2, y:_y-64*scaleX/2});
         }
-        Crafty.e("TouchSpot").TouchSpot(_x-64*scaleX/2,_y-64*scaleX/2);
+        //Crafty.e("TouchSpot").TouchSpot(_x-64*scaleX/2,_y-64*scaleX/2);
     }
 })

@@ -3,8 +3,8 @@ Crafty.c("Player",{
     lives:3,
     score:0,
     auto:false,
-    ndx:0,
-    ndy:0,
+    target_x:0,
+    target_y:0,
     move:false,
     init:function(){
         this.playerSpeed = Math.ceil(this.playerSpeed *= scaleX);
@@ -21,7 +21,7 @@ Crafty.c("Player",{
                 A: 180
             })
         .bind('Moved', function(from){
-                console.log(from.x, " ", from.y, " ", this.x, " ", this.y);
+                //console.log(from.x, " ", from.y, " ", this.x, " ", this.y);
                 if(this.x + this.w > Crafty.viewport.width ||
                     this.x+this.w < this.w ||
                     this.y+this.h-(35*scaleX) < this.h ||
@@ -33,7 +33,7 @@ Crafty.c("Player",{
                 }
             })
         .bind("NewDirection", function(direction){
-                console.log(direction);
+                console.log(direction.x, " ", old_direction);
                 if(direction.x<0 && old_direction <=0){
                     if(!this.isPlaying("move_left"))
                         this.stop().animate("move_left", 1, 0);
@@ -122,24 +122,46 @@ Crafty.c("Player",{
             //this.destroy();
             //Crafty.trigger("GameOver",this.score);
         }else{
+            this.stopPlayerMove();
             this.resetPos();
+            this.reset();
         }
     },
     movePlayer:function(moveTo){
-        console.log(moveTo);
-        var move_x = this.x-moveTo.x;
-        var move_y = this.y-moveTo.y;
-        if(moveTo.x != 0){
-        //if(move_x != 0 && move_y != 0){
-            this.bind("EnterFrame", this.movePlayerTo);
+        //console.log(moveTo.x);
+        this.stopPlayerMove();
+        this.target_x=moveTo.x;
+        this.target_y=moveTo.y;
+        if(moveTo.x < this.x){
+            this.trigger("NewDirection", {x:-8, y:0});
+        }else if(moveTo.x > this.x){
+            this.trigger("NewDirection", {x:8, y:0});
         }
-        else{
-            this.stopPlayerMove();
-        }
+        this.bind("EnterFrame", this.movePlayerTo);
     },
     movePlayerTo:function(){
-        console.log("bound");
-        this.y += -2;
+        //console.log(this.target_x, " ", this.target_y);
+        if (Math.abs(this.target_x - this.x) < this.playerSpeed && Math.abs(this.target_y - this.y) < this.playerSpeed){
+            var prev_pos = {
+                x: this.x,
+                y: this.y
+            };
+            this.x = this.target_x;
+            this.y = this.target_y;
+            this.stopPlayerMove();
+
+            this.trigger('Moved', prev_pos);
+            this.trigger("NewDirection", {x:0, y:0});
+            return;
+        }
+        var dx = this.target_x - this.x, dy = this.target_y - this.y, oldx = this.x, oldy = this.y;
+        var d = Math.sqrt(dx * dx + dy * dy)
+
+        this.x += (dx * this.playerSpeed)/d;
+        this.trigger('Moved',{x: oldx, y: this.y});
+        this.y += (dy * this.playerSpeed)/d;
+        this.trigger('Moved',{x:this.x, y:oldy});
+        //this.y += -2;
     },
     stopPlayerMove:function(){
         this.unbind("EnterFrame", this.movePlayerTo);

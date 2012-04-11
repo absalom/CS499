@@ -1,4 +1,6 @@
-<!DOCTYPE html5>
+<meta name="viewport" content="width = device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <html>
 <head>
     <script type="text/javascript">
@@ -13,7 +15,6 @@
                 IMG_LASER = "img/laser.png",
                 IMG_ENEMY = "img/enemy.png";
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <script type="text/javascript" src="crafty-min.js"></script>
     <!-- <script type="text/javascript" src="underscore-min.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>-->
@@ -27,11 +28,8 @@
     <link type="text/css" href="style.css" rel="stylesheet"/>
     <title>CS499 HTML5 Project</title>
 </head>
-<body>
+<body onload="load()">
 <div id="cr-stage">
-    <script type="text/javascript">
-        load();
-    </script>
 </div>
 </body>
 </html>
