@@ -1,25 +1,36 @@
 <!DOCTYPE html5>
 <html>
-  <head>
+<head>
+    <script type="text/javascript">
+        var ASPECT = 4/3, WIDTH=600, HEIGHT=800;
+        var scaleX, scaleY, newWidth, newHeight;
+        var IMG_STARBACK = "img/star_back.png",
+                IMG_STARMID = "img/star_mid.png",
+                IMG_STARFORE = "img/star_fore.png",
+                IMG_TEST = "img/star_test.png",
+                IMG_TOUCHSPOT = "img/touchspot.png",
+                IMG_FIGHTER = "img/fighter.png",
+                IMG_LASER = "img/laser.png",
+                IMG_ENEMY = "img/enemy.png";
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <script type="text/javascript" src="crafty-min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="crafty-min.js"></script>
     <!-- <script type="text/javascript" src="underscore-min.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>-->
-    <script type="text/javascript" src="game.js" type="text/javascript"></script>
+    <!--<script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="enemys.js"></script>-->
+    <script type="text/javascript" src="player.js"></script>
+    <script type="text/javascript" src="enemys.js"></script>
+    <script type="text/javascript" src="start.js"></script>
+    <script type="text/javascript" src="loading.js"></script>
+    <link type="text/css" href="style.css" rel="stylesheet"/>
     <title>CS499 HTML5 Project</title>
-    <style>
-    body, html { margin:0; padding: 0; overflow:hidden; font-family:Arial; font-size:20pc
-                 -webkit-user-select:none;
-                 -khtml-user-select:none;
-                 -moz-user-select: none;
-                 user-select: none; }
-    #cr-stage { border:0px; margin:0px; color:black 
-                -webkit-user-select:none;
-                -khtml-user-select:none;
-                -moz-user-select: none;
-                user-select: none; }
-    </style>
-  </head>
-  <body>
-  </body> 
+</head>
+<body>
+<div id="cr-stage">
+    <script type="text/javascript">
+        load();
+    </script>
+</div>
+</body>
 </html>

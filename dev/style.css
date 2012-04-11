@@ -1,0 +1,14 @@
+body, html { margin:0; padding: 0; overflow:hidden; font-family:Arial; font-size:20pc
+-webkit-user-select:none;
+    -khtml-user-select:none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: black;
+}
+#cr-stage { border:0px solid black; margin:0px auto; color:black
+-webkit-user-select:none;
+    -khtml-user-select:none;
+    -moz-user-select: none;
+    user-select: none;
+
+}
