@@ -103,6 +103,9 @@ Crafty.c("Player",{
         .resetScale();
         this.resetPos();
         //console.log("player created");
+        if('createTouch' in document){
+            this.auto = true;
+        }
         return this;
     },
     resetPos:function(){

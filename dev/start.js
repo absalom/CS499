@@ -43,7 +43,7 @@ Crafty.scene("start", function(){
 
     this.addEvent(this, Crafty.stage.elem, "touchend", function(e) {
         e.preventDefault();
-        var now = new Date().getTime();
+        /*var now = new Date().getTime();
         var lt = lastTouch || now + 1
         var delta = now - lt;
         if(delta < 500 && delta > 0) {
@@ -51,7 +51,7 @@ Crafty.scene("start", function(){
         }else {
             // single tap
         }
-        lastTouch = now;
+        lastTouch = now;*/
     });
 
     Crafty.bind("EnterFrame", function(frame){
