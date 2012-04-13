@@ -45,6 +45,9 @@ Crafty.scene("loading", function(){
         Crafty.sprite(64, IMG_LASER, { laser:[0,0] });
         Crafty.sprite(64, IMG_TOUCHSPOT, { spot:[0,0] });
         Crafty.sprite(64, IMG_ENEMY, {baseEnemy:[0,0] });
+        Crafty.audio.add({
+            laserSound: ["sounds/laser.wav",
+                         "sounds/laser.mp3"]});
         Crafty.scene("start");
     });
 })

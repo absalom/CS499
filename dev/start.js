@@ -1,17 +1,20 @@
 Crafty.scene("start", function(){
     //console.log("start");
-    var lastTouch = 0;
+    var lastTouch = 0, enemyCounter = 30;
     Crafty.background("url(img/star_back.png)");
     var player = Crafty.e("Player")
     var enemysIncoming = function(frame){
-        if(frame % 30 == 0){
-            var temp = Crafty.e("Enemy")
+        if(frame % enemyCounter == 0){
+            Crafty.e("Enemy")
                 .attr({
                     h:64*scaleX,
                     y:-64*scaleX,
                     w:64*scaleX,
                     x:Crafty.math.randomInt(64*scaleX,Crafty.viewport.width-64*scaleX)
                 });
+        }
+        if(frame % 100 == 0){
+            enemyCounter--;
         }
     }
 

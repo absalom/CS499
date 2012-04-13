@@ -8,7 +8,7 @@ Crafty.c("Player",{
     move:false,
     init:function(){
         this.playerSpeed = Math.ceil(this.playerSpeed *= scaleX);
-        var keyDown = false, old_direction = 0, counter = 0, rate = 10;
+        var keyDown = false, old_direction = 0, counter = 0, rate = 12;
         this.requires("2d,Canvas,fighter,SpriteAnimation,Multiway,Keyboard,Collision,Mouse")
         .multiway(this.playerSpeed, {
                 UP_ARROW: -90,
@@ -33,7 +33,7 @@ Crafty.c("Player",{
                 }
             })
         .bind("NewDirection", function(direction){
-                console.log(direction.x, " ", old_direction);
+                //console.log(direction.x, " ", old_direction);
                 if(direction.x<0 && old_direction <=0){
                     if(!this.isPlaying("move_left"))
                         this.stop().animate("move_left", 1, 0);
@@ -87,6 +87,7 @@ Crafty.c("Player",{
                             this.y -= this.yspeed*scaleX;
                             if(this._y < 0) this.destroy();
                         });
+                    Crafty.audio.play("laserSound");
                 }
                 else counter--;
             })
