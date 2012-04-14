@@ -80,8 +80,10 @@ Crafty.c("EnemyShip",{
         .bind("Shoot", function(){
                 var bullet = Crafty.e("2d,Canvas,Collision,enemySpaceFire")
                 bullet.attr({
-                    x: this._x+this._w/2-bullet.w/2,
-                    y: this._y+this._h-bullet.h/2
+                    h: ENEMY_SIZE * scaleX,
+                    w: ENEMY_SIZE * scaleX,
+                    x: this._x+this._w/2-ENEMY_SIZE * scaleX/2,
+                    y: this._y+this._h-ENEMY_SIZE * scaleX/2
                 })
                 .bind("EnterFrame", function(){
                     this.y += 8;

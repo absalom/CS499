@@ -117,9 +117,6 @@ Crafty.c("Player",{
         .resetScale();
         this.resetPos();
         //console.log("player created");
-        if('createTouch' in document){
-            this.auto = true;
-        }
         return this;
     },
     resetPos:function(){
@@ -147,6 +144,7 @@ Crafty.c("Player",{
         });
         this.playerReady = false;
         this.lives--;
+        this.auto = false;
         if(this.lives < 0){
             this.destroy();
             Crafty.trigger("GameOver");

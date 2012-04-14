@@ -52,6 +52,7 @@ Crafty.scene("loading", function(){
             explosion2:[0,1],
             explosion3:[0,2]
         });
+        //console.log(mobile);
         if(!mobile){
             Crafty.audio.add({
                 laserSound: ["sounds/laser.wav",
@@ -64,7 +65,7 @@ Crafty.scene("loading", function(){
                            "sounds/explode.ogg"]});
         }
         else{
-            rafty.audio.add({
+            Crafty.audio.add({
                 laserSound: []});
             Crafty.audio.add({
                 enemySound: []});

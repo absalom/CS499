@@ -32,6 +32,9 @@ Crafty.scene("gamelevel", function(){
         else{
             readyCount = 0;
             player.playerReady = true;
+            if(mobile){
+                player.auto = true;
+            }
         }
     }
 
@@ -107,12 +110,7 @@ Crafty.scene("gamelevel", function(){
 
     function touchEvent(_x, _y) {
         //console.log("touchEvent");
-        if(_x <= (PAUSE_BOX*scaleX) && _y >= (Crafty.viewport.height - PAUSE_BOX*scaleX)) {
-            //console.log("pause");
-            Crafty.pause();
-        }else {
-            player.movePlayer({x:_x-FIGHTER_SIZE*scaleX/2, y:_y-FIGHTER_SIZE*scaleX/2});
-        }
+        player.movePlayer({x:_x-FIGHTER_SIZE*scaleX/2, y:_y-FIGHTER_SIZE*scaleX/2});
         //Crafty.e("TouchSpot").TouchSpot(_x-64*scaleX/2,_y-64*scaleX/2);
     }
 })
