@@ -91,7 +91,7 @@ Crafty.c("EnemyShip",{
             //uses the shoot function defined below
             player = Crafty(player[0]);
             x = Math.abs((this.x+this._w/2)-player.x);
-            if((x<40)&& this._y < player.y && frame.frame % 20 == 0){
+            if((x<40)&& this._y < player.y && frame.frame % 20 == 0 && player.playerReady){
                 this.trigger("Shoot");
             }
             this.y += 1.5*scaleX;
