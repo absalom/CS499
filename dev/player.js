@@ -133,8 +133,8 @@ Crafty.c("Player",{
                     this.die();
                 }
             })
-        .resetScale()  //make sure the scale is good and reset the position
-        .resetPos();
+        .resetScale();  //make sure the scale is good and reset the position
+        this.resetPos();
         //console.log("player created");
         return this;
     },
