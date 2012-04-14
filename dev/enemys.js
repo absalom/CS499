@@ -1,6 +1,7 @@
 Crafty.c("Enemy", {
     points:5,
     hp:2,
+    playerID:null,
     init:function(){
         //console.log("Enemy");
         var speed = Crafty.math.randomInt(Math.ceil(3*scaleX),Math.ceil(7*scaleX));
@@ -15,7 +16,7 @@ Crafty.c("Enemy", {
                     this.y > Crafty.viewport.height +this.h){
                     this.destroy();
                 }
-                if(counter % 20 == 0){
+                if(counter % 30 == 0){
                     speed = Crafty.math.randomInt(Math.ceil(4*scaleX),Math.ceil(9*scaleX));
                     direction = Crafty.math.randomInt(-speed, speed);
                 }
@@ -25,10 +26,12 @@ Crafty.c("Enemy", {
             })
         .onHit("laser", function(ent){
                 var bullet = ent[0].obj;
+                this.playerID = bullet.playerID;
                 bullet.destroy();
                 this.hp--;
-                this.x -= 8;
+                this.x -= 16;
                 if(this.hp == 0){
+                    Crafty(this.playerID).trigger("Killed",this.points);
                     this.destroy();
                 }
             })
@@ -39,7 +42,7 @@ Crafty.c("Enemy", {
             })
     },
     resetScale:function(){
-        this.h=64*scaleX;
-        this.w=64*scaleX;
+        this.h=ENEMY_SIZE*scaleX;
+        this.w=ENEMY_SIZE*scaleX;
     }
 });

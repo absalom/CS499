@@ -80,9 +80,19 @@ Crafty.c("Player",{
                 if((keyDown || this.auto) && counter < 1){
                     counter = rate;
                     Crafty.e("2D, Canvas, laser, SpriteAnimation")
-                        .attr({x:this._x, y:this._y - 64*scaleX,
-                            w:64*scaleX, h:64*scaleX,
-                            yspeed:20})
+                        .attr({x:this._x, y:this._y - LASER_SIZE*scaleX,
+                            w:LASER_SIZE*scaleX, h:LASER_SIZE*scaleX,
+                            yspeed:20, playerID:this[0]})
+                        .crop(0,0,LASER_SIZE/4*scaleX,LASER_SIZE*scaleX)
+                        .bind("EnterFrame", function() {
+                            this.y -= this.yspeed*scaleX;
+                            if(this._y < 0) this.destroy();
+                        });
+                    Crafty.e("2D, Canvas, laser, SpriteAnimation")
+                        .attr({x:this._x+46*scaleX, y:this._y - LASER_SIZE*scaleX,
+                            w:LASER_SIZE*scaleX, h:64*scaleX,
+                            yspeed:20, playerID:this[0]})
+                        .crop(49*scaleX,0,15*scaleX,LASER_SIZE*scaleX)
                         .bind("EnterFrame", function() {
                             this.y -= this.yspeed*scaleX;
                             if(this._y < 0) this.destroy();
@@ -93,6 +103,7 @@ Crafty.c("Player",{
             })
         .bind("Killed", function(points){
                 this.score += points;
+                console.log(this.score);
                 Crafty.trigger("UpdateStats");
             })
         .onHit("EnemyBullet", function(ent){
@@ -112,20 +123,21 @@ Crafty.c("Player",{
         //Crafty.trigger("UpdateStats");
         //console.log("reset position");
         this.x = Crafty.viewport.width/2-this.w/2;
-        this.y = Crafty.viewport.height-this.h-64*scaleX;
+        this.y = Crafty.viewport.height-this.h-FIGHTER_SIZE*scaleX;
     },
     resetScale:function(){
-        this.h=64*scaleX;
-        this.w=64*scaleX;
+        this.h=FIGHTER_SIZE*scaleX;
+        this.w=FIGHTER_SIZE*scaleX;
     },
     die:function(){
         this.lives--;
         //console.log(this.lives);
         //Crafty.trigger("UpdateStats");
-        if(this.lives <= 0){
-            //this.destroy();
-            //Crafty.trigger("GameOver",this.score);
+        if(this.lives < 0){
+            this.destroy();
+            Crafty.trigger("GameOver");
         }else{
+            Crafty.trigger("UpdateStats");
             this.stopPlayerMove();
             this.resetPos();
             this.reset();
@@ -165,7 +177,6 @@ Crafty.c("Player",{
         this.trigger('Moved',{x: oldx, y: this.y});
         this.y += (dy * this.playerSpeed)/d;
         this.trigger('Moved',{x:this.x, y:oldy});
-        //this.y += -2;
     },
     stopPlayerMove:function(){
         this.unbind("EnterFrame", this.movePlayerTo);
@@ -175,7 +186,7 @@ Crafty.c("Player",{
 Crafty.c("TouchSpot", {
     TouchSpot: function(x, y) {
         this.addComponent("2D, Canvas, spot, Tween");
-        this.attr({x:x, y:y, w:64 * scaleX, h:64 * scaleX});
+        this.attr({x:x, y:y, w:FIGHTER_SIZE * scaleX, h:FIGHTER_SIZE * scaleX});
         this.tween({alpha:0.0}, 50);
 
         this.bind("EnterFrame", function(e) {

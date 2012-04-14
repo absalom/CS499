@@ -35,16 +35,16 @@ function resizeCanvas() {
 Crafty.scene("loading", function(){
     Crafty.e("2D, DOM, Text")
         .attr({w:Crafty.viewport.width, h:Crafty.viewport.height, y:Crafty.viewport.width/2})
-        .textColor("#FFFFFF")
-        .textFont({size:16 * 2 * scaleX + "px"})
         .text("Loading...")
-        .css({"text-align":"center", "vertical-align":"middle"});
+        .textColor("#FFFFFF")
+        .textFont({ family: 'Arial', size: 30*scaleX+'px'})
+        .css({ 'text-align':'center', 'vertical-align':'middle'});
 
     Crafty.load([IMG_STARBACK, IMG_STARMID, IMG_STARFORE, IMG_FIGHTER, IMG_LASER, IMG_TOUCHSPOT, IMG_ENEMY], function(){
-        Crafty.sprite(64, IMG_FIGHTER, { fighter:[3, 0] });
-        Crafty.sprite(64, IMG_LASER, { laser:[0,0] });
+        Crafty.sprite(FIGHTER_SIZE, IMG_FIGHTER, { fighter:[3, 0] });
+        Crafty.sprite(LASER_SIZE, IMG_LASER, { laser:[0,0] })
         Crafty.sprite(64, IMG_TOUCHSPOT, { spot:[0,0] });
-        Crafty.sprite(64, IMG_ENEMY, {baseEnemy:[0,0] });
+        Crafty.sprite(ENEMY_SIZE, IMG_ENEMY, {baseEnemy:[0,0] });
         Crafty.audio.add({
             laserSound: ["sounds/laser.wav",
                          "sounds/laser.mp3"]});
