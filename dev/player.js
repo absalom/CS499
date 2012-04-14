@@ -1,3 +1,10 @@
+/*This module declares the player component.  It relies on the Crafty.js engine
+ *to create a component that uses the fighter sprite.  It relies on various
+ *Crafty components.
+ *
+ *Authors: Zaid Mullins, Stephen Burgin, and Clint Woodson
+ */
+
 Crafty.c("Player",{
     playerSpeed:8,
     lives:3,
@@ -8,10 +15,15 @@ Crafty.c("Player",{
     move:false,
     playerReady:false,
     init:function(){
+        //Adjust the speed based on the scaling factor
         this.playerSpeed = Math.ceil(this.playerSpeed *= scaleX);
+
+        //Variables to aid in the movement of the shp
         var keyDown = false, old_direction = 0, counter = 0, rate = 12;
+
+        //Requirements for the Crafty component
         this.requires("2d,Canvas,fighter,SpriteAnimation,Multiway,Keyboard,Collision,Mouse,Tween")
-        .multiway(this.playerSpeed, {
+        .multiway(this.playerSpeed, { //defines movement for the arrow keys and WSAD
                 UP_ARROW: -90,
                 DOWN_ARROW: 90,
                 RIGHT_ARROW: 0,
@@ -21,7 +33,7 @@ Crafty.c("Player",{
                 D: 0,
                 A: 180
             })
-        .bind('Moved', function(from){
+        .bind('Moved', function(from){  //Part of the Crafty system
                 //console.log(from.x, " ", from.y, " ", this.x, " ", this.y);
                 if(this.x + this.w > Crafty.viewport.width ||
                     this.x+this.w < this.w ||
@@ -33,7 +45,7 @@ Crafty.c("Player",{
                         });
                 }
             })
-        .bind("NewDirection", function(direction){
+        .bind("NewDirection", function(direction){  //Used to call animations on the ship
                 //console.log(direction.x, " ", old_direction);
                 if(direction.x<0 && old_direction <=0){
                     if(!this.isPlaying("move_left"))
@@ -59,6 +71,8 @@ Crafty.c("Player",{
                 }
                 old_direction = direction.x;
             })
+
+        //Create ship animations using the sprite map
         .animate("move_left", 3, 0, 0)
         .animate("move_right", 3, 0, 6)
         .animate("move_left_right", 6, 0, 0)
@@ -78,6 +92,7 @@ Crafty.c("Player",{
                 }
             })
         .bind("EnterFrame", function(){
+                //Creates the lasers that the ship fires
                 if((keyDown || this.auto) && counter < 1){
                     counter = rate;
                     Crafty.e("2D, Canvas, laser, SpriteAnimation")
@@ -102,11 +117,15 @@ Crafty.c("Player",{
                 }
                 else counter--;
             })
+
+         //Used whenever the player kills an enemy
         .bind("Killed", function(points){
                 //console.log(this.score);
                 this.score += points;
                 Crafty.trigger("UpdateStats");
             })
+
+        //Used when an enemy bullet hits the player
         .onHit("EnemyBullet", function(ent){
                 if(player.playerReady){
                     var bullet = ent[0].obj;
@@ -114,11 +133,14 @@ Crafty.c("Player",{
                     this.die();
                 }
             })
-        .resetScale();
-        this.resetPos();
+        .resetScale()  //make sure the scale is good and reset the position
+        .resetPos();
         //console.log("player created");
         return this;
     },
+
+    //This function resets the position of the player to middle of the screen
+    //at the bottom with an animated action
     resetPos:function(){
         //Crafty.trigger("UpdateStats");
         //console.log("reset position");
@@ -135,6 +157,10 @@ Crafty.c("Player",{
         this.h=FIGHTER_SIZE*scaleX;
         this.w=FIGHTER_SIZE*scaleX;
     },
+
+    //The die function creates an explosion, resets the position
+    //of the player if he has lives left or presents the
+    //game over dialogue if there are no lives left
     die:function(){
         //console.log(this.lives);
         //Crafty.trigger("UpdateStats");
@@ -154,6 +180,11 @@ Crafty.c("Player",{
             this.resetPos();
         }
     },
+
+    //This function is used in conjunction with touch or mouse input to move
+    //the player to a specified point.  It uses the movePlayerTo functions to aid
+    //in the process and also the stopPlayerMove function.
+    //The function takes as input an x and y coordinate to move the ship towards.
     movePlayer:function(moveTo){
         //console.log(moveTo.x);
         this.stopPlayerMove();
@@ -166,6 +197,8 @@ Crafty.c("Player",{
         }
         this.bind("EnterFrame", this.movePlayerTo);
     },
+    //Calculates the variables used to move the player and executes them until the
+    //player is moved to the correction position
     movePlayerTo:function(){
         //console.log(this.target_x, " ", this.target_y);
         if (Math.abs(this.target_x - this.x) < this.playerSpeed && Math.abs(this.target_y - this.y) < this.playerSpeed){
@@ -189,11 +222,16 @@ Crafty.c("Player",{
         this.y += (dy * this.playerSpeed)/d;
         this.trigger('Moved',{x:this.x, y:oldy});
     },
+    //unbinds the movePlayerTo function
     stopPlayerMove:function(){
         this.unbind("EnterFrame", this.movePlayerTo);
     }
 });
 
+
+//This component was used in debugging to see where the clicks were registering to
+//It can be used by uncommenting here and in the gamelevel.js module
+/*
 Crafty.c("TouchSpot", {
     TouchSpot: function(x, y) {
         this.addComponent("2D, Canvas, spot, Tween");
@@ -208,4 +246,4 @@ Crafty.c("TouchSpot", {
         });
     }
 });
-
+*/

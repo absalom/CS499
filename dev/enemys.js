@@ -1,8 +1,16 @@
+/*This module is used to create the enemy components of the game.  It defines a base
+ *enemy that is then extended by the SpaceBug and EnemyShip components.  Each of them
+ *uses the base enemy functions and then customizes it for different appearances and
+ *functions.
+ *
+ *Authors: Zaid Mullins, Stephen Burgin, and Clint Woodson
+ */
+
 Crafty.c("Enemy", {
     playerID:null,
     init:function(){
         //console.log("Enemy");
-
+        //The base enemy, if it leaves the canvas then it is destroyed
         this.requires("2d, Canvas, Collision")
         .bind("EnterFrame", function(frame){
                 if(this.x > Crafty.viewport.width + this.w ||
@@ -12,6 +20,8 @@ Crafty.c("Enemy", {
                     this.destroy();
                 }
             })
+
+         //Define base collision with the player and the player's laser
         .onHit("laser", function(ent){
                 var bullet = ent[0].obj;
                 this.playerID = bullet.playerID;
@@ -41,10 +51,13 @@ Crafty.c("Enemy", {
     }
 });
 
+//The SpaceBug enemy uses the spaceBug sprite to create an enemy that flies in a random
+//path and changes directions randomly to create a moving target
 Crafty.c("SpaceBug",{
     hp:2,
     points:5,
     init:function(){
+        //random speed and direction
         var speed = Crafty.math.randomInt(Math.ceil(3*scaleX),Math.ceil(7*scaleX));
         var direction = Crafty.math.randomInt(-speed, speed);
         var counter = 0;
@@ -52,6 +65,7 @@ Crafty.c("SpaceBug",{
         this.requires("Enemy,spaceBug")
         .bind("EnterFrame", function(frame){
             if(counter % 30 == 0){
+                //change random movement every 30 frames
                 speed = Crafty.math.randomInt(Math.ceil(4*scaleX),Math.ceil(9*scaleX));
                 direction = Crafty.math.randomInt(-speed, speed);
             }
@@ -62,6 +76,9 @@ Crafty.c("SpaceBug",{
     }
 });
 
+//EnemyShip units fly down the screen and fire bullets at the player when the player
+//is in the line of sight.  It uses the enemySpaceShip sprite and
+//enemySpaceFire sprites for art.
 Crafty.c("EnemyShip",{
     hp:5,
     points:15,
@@ -70,13 +87,16 @@ Crafty.c("EnemyShip",{
         var player = Crafty("Player");
         this.requires("Enemy,enemySpaceShip")
         .bind("EnterFrame", function(frame){
+            //find the player location and fire if hes close!
+            //uses the shoot function defined below
             player = Crafty(player[0]);
             x = Math.abs((this.x+this._w/2)-player.x);
             if((x<40)&& this._y < player.y && frame.frame % 20 == 0){
                 this.trigger("Shoot");
             }
-            this.y += 1.5;
+            this.y += 1.5*scaleX;
         })
+        //Creates an enemy laser that is shot towards the player
         .bind("Shoot", function(){
                 var bullet = Crafty.e("2d,Canvas,Collision,enemySpaceFire")
                 bullet.attr({
@@ -86,7 +106,7 @@ Crafty.c("EnemyShip",{
                     y: this._y+this._h-ENEMY_SIZE * scaleX/2
                 })
                 .bind("EnterFrame", function(){
-                    this.y += 8;
+                    this.y += 8*scaleX;
                 })
                 .onHit("Player", function(ent){
                         var player = ent[0].obj;

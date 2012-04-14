@@ -1,3 +1,10 @@
+/*This module declares the start scene.  This is a simple scene with a
+*start button that the user can press when they want to begin the game.
+*When pressed it begins the gamelevel scene described in gamelevel.js
+*
+*Authors: Zaid Mullins, Stephen Burgin, and Clint Woodson
+*/
+
 Crafty.scene("start", function(){
     var startButton = Crafty.e("2D, DOM, Image, Mouse")
         .image("img/start.png", "no-repeat")
