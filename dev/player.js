@@ -6,10 +6,11 @@ Crafty.c("Player",{
     target_x:0,
     target_y:0,
     move:false,
+    playerReady:false,
     init:function(){
         this.playerSpeed = Math.ceil(this.playerSpeed *= scaleX);
         var keyDown = false, old_direction = 0, counter = 0, rate = 12;
-        this.requires("2d,Canvas,fighter,SpriteAnimation,Multiway,Keyboard,Collision,Mouse")
+        this.requires("2d,Canvas,fighter,SpriteAnimation,Multiway,Keyboard,Collision,Mouse,Tween")
         .multiway(this.playerSpeed, {
                 UP_ARROW: -90,
                 DOWN_ARROW: 90,
@@ -83,16 +84,16 @@ Crafty.c("Player",{
                         .attr({x:this._x, y:this._y - LASER_SIZE*scaleX,
                             w:LASER_SIZE*scaleX, h:LASER_SIZE*scaleX,
                             yspeed:20, playerID:this[0]})
-                        .crop(0,0,LASER_SIZE/4*scaleX,LASER_SIZE*scaleX)
+                        .crop(0,0,LASER_SIZE/4,LASER_SIZE)
                         .bind("EnterFrame", function() {
                             this.y -= this.yspeed*scaleX;
                             if(this._y < 0) this.destroy();
                         });
                     Crafty.e("2D, Canvas, laser, SpriteAnimation")
-                        .attr({x:this._x+46*scaleX, y:this._y - LASER_SIZE*scaleX,
-                            w:LASER_SIZE*scaleX, h:64*scaleX,
+                        .attr({x:this._x+44*scaleX, y:this._y - LASER_SIZE*scaleX,
+                            w:LASER_SIZE*scaleX, h:LASER_SIZE*scaleX,
                             yspeed:20, playerID:this[0]})
-                        .crop(49*scaleX,0,15*scaleX,LASER_SIZE*scaleX)
+                        .crop(49,0,15,LASER_SIZE)
                         .bind("EnterFrame", function() {
                             this.y -= this.yspeed*scaleX;
                             if(this._y < 0) this.destroy();
@@ -107,9 +108,11 @@ Crafty.c("Player",{
                 Crafty.trigger("UpdateStats");
             })
         .onHit("EnemyBullet", function(ent){
-                var bullet = ent[0].obj;
-                bullet.destroy();
-                this.die();
+                if(player.playerReady){
+                    var bullet = ent[0].obj;
+                    bullet.destroy();
+                    this.die();
+                }
             })
         .resetScale();
         this.resetPos();
@@ -122,17 +125,28 @@ Crafty.c("Player",{
     resetPos:function(){
         //Crafty.trigger("UpdateStats");
         //console.log("reset position");
+        this.playerReady = false;
         this.x = Crafty.viewport.width/2-this.w/2;
-        this.y = Crafty.viewport.height-this.h-FIGHTER_SIZE*scaleX;
+        this.y = Crafty.viewport.height/4-this.h-FIGHTER_SIZE*scaleX;
+        this.alpha=0;
+        this.tween({
+            y:Crafty.viewport.height-this.h-FIGHTER_SIZE*scaleX,
+            alpha:1.0},
+            50);
     },
     resetScale:function(){
         this.h=FIGHTER_SIZE*scaleX;
         this.w=FIGHTER_SIZE*scaleX;
     },
     die:function(){
-        this.lives--;
         //console.log(this.lives);
         //Crafty.trigger("UpdateStats");
+        var expl = Crafty.e("RandomExplosion").attr({
+            x:this.x,
+            y:this.y
+        });
+        this.playerReady = false;
+        this.lives--;
         if(this.lives < 0){
             this.destroy();
             Crafty.trigger("GameOver");
@@ -140,7 +154,6 @@ Crafty.c("Player",{
             Crafty.trigger("UpdateStats");
             this.stopPlayerMove();
             this.resetPos();
-            this.reset();
         }
     },
     movePlayer:function(moveTo){

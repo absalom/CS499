@@ -1,12 +1,12 @@
 Crafty.scene("gamelevel", function(){
     //console.log("start");
-    var lastTouch = 0, enemyCounter = 30;
+    var lastTouch = 0, enemyCounter = 30, readyCount=0;
     Crafty.background("url("+IMG_STARBACK+")");
 
     var player = Crafty.e("Player")
     var enemysIncoming = function(frame){
-        if(frame % enemyCounter == 0){
-            Crafty.e("Enemy")
+        if(frame % enemyCounter == 0 && player.playerReady){
+            Crafty.e("SpaceBug")
                 .attr({
                     h:64*scaleX,
                     y:-64*scaleX,
@@ -14,8 +14,24 @@ Crafty.scene("gamelevel", function(){
                     x:Crafty.math.randomInt(ENEMY_SIZE*scaleX,Crafty.viewport.width-ENEMY_SIZE*scaleX)
                 });
         }
-        if(frame % 100 == 0 && enemyCounter != 0){
+        if(frame % (enemyCounter*10) == 0 && player.playerReady){
+            Crafty.e("EnemyShip")
+                .attr({
+                    h:64*scaleX,
+                    y:-64*scaleX,
+                    w:64*scaleX,
+                    x:Crafty.math.randomInt(ENEMY_SIZE*scaleX,Crafty.viewport.width-ENEMY_SIZE*scaleX)
+                });
+        }
+        if(frame % 1000 == 0 && enemyCounter != 0 && player.playerReady){
             enemyCounter--;
+        }
+        if(!player.playerReady && readyCount < 100){
+            readyCount++;
+        }
+        else{
+            readyCount = 0;
+            player.playerReady = true;
         }
     }
 
