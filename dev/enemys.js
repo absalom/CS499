@@ -66,7 +66,7 @@ Crafty.c("EnemyShip",{
     hp:5,
     points:15,
     init:function(){
-        console.log("Enemy Ship");
+        //console.log("Enemy Ship");
         var player = Crafty("Player");
         this.requires("Enemy,enemySpaceShip")
         .bind("EnterFrame", function(frame){

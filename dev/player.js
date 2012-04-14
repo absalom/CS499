@@ -103,8 +103,8 @@ Crafty.c("Player",{
                 else counter--;
             })
         .bind("Killed", function(points){
+                //console.log(this.score);
                 this.score += points;
-                console.log(this.score);
                 Crafty.trigger("UpdateStats");
             })
         .onHit("EnemyBullet", function(ent){

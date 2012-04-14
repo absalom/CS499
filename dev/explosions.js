@@ -1,6 +1,6 @@
 Crafty.c("RandomExplosion",{
     init:function(){
-        console.log("explosion");
+        //console.log("explosion");
         var rand = Crafty.math.randomInt(1,3);
         this.addComponent("2D","Canvas","explosion"+rand,"SpriteAnimation")
         .animate("explode1",0,0,16)
