@@ -54,7 +54,7 @@ Crafty.scene("gamelevel", function(){
         else{
             readyCount = 0;
             player.playerReady = true;
-            if(mobile){
+            if('createTouch' in document){//this may need adjusting to get autofire correct
                 player.auto = true;
             }
         }

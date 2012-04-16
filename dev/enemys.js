@@ -90,7 +90,7 @@ Crafty.c("EnemyShip",{
             //find the player location and fire if hes close!
             //uses the shoot function defined below
             player = Crafty(player[0]);
-            x = Math.abs((this.x+this._w/2)-player.x);
+            x = Math.abs((this.x+this._w*scaleX/2)-player.x);
             if((x<40)&& this._y < player.y && frame.frame % 20 == 0 && player.playerReady){
                 this.trigger("Shoot");
             }

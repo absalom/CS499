@@ -71,6 +71,7 @@ Crafty.scene("loading", function(){
         });
         //console.log(mobile);
         //Sounds currently don't work well on mobile devices so don't load them to save time and bandwidth
+        /*Could add this in later, but think its causing some glitches with certain mobile devices
         if(!mobile){
             Crafty.audio.add({
                 laserSound: ["sounds/laser.wav",
@@ -89,7 +90,16 @@ Crafty.scene("loading", function(){
                 enemySound: []});
             Crafty.audio.add({
                 exploding: []});
-        }
+        }*/
+        Crafty.audio.add({
+            laserSound: ["sounds/laser.wav",
+                "sounds/laser.mp3"]});
+        Crafty.audio.add({
+            enemySound: ["sounds/enemy.wav",
+                "sounds/enemy.mp3"]});
+        Crafty.audio.add({
+            exploding: ["sounds/explode.mp3",
+                "sounds/explode.ogg"]});
         //Move to the crafty start scene
         Crafty.scene("start");
     });
